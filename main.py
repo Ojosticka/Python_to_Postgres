@@ -2,15 +2,25 @@
 import os
 import pandas as pd
 from sqlalchemy import create_engine
-from cred import db_config
+from dotenv import load_dotenv
+
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Read credentials from environment variables
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
 
 def upload_csv_to_postgres(folder_path):
     """Uploads all CSV files in the folder to PostgreSQL."""
     
     # Create connection string
     engine = create_engine(
-        f"postgresql+psycopg2://{db_config['user']}:{db_config['password']}@"
-        f"{db_config['host']}:{db_config['port']}/{db_config['database']}"
+         f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )
     
     # Check if path exists
